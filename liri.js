@@ -33,13 +33,19 @@ switch (command) {
             spotifySong("The Sign");
         }
 
-    case "movieThis":
+    case "movie-this":
         if (x) {
             movieThis(x);
             break;
         } else {
             movieThis("Mr. Nobody");
         }
+
+    case "concert-this":
+        if (x) {
+            concertThis(x);
+            break;
+        }    
 }
 
 function spotifySong(x) {
@@ -53,11 +59,43 @@ function spotifySong(x) {
         var data = data.tracks.items
 
         console.log("========================")
-        console.log("The Artist is: " + data[0].artists[0].name);
-        console.log("The song title is: " + data[0].name);
-        console.log("Preview Link: " + data[0].preview_url);
-        console.log("The album title is: " + data[0].album.name);
+        console.log("ARTIST: " + data[0].artists[0].name);
+        console.log("TITLE: " + data[0].name);
+        console.log("PREVIEW LINK: " + data[0].preview_url);
+        console.log("ALBUM " + data[0].album.name);
+        console.log("========================")
     });
 }
 
-// OMDB = instead of spotify.search, you're calling directly to the URL. NODE.JS Activity 17/18
+function movieThis(x) {
+
+    var movieQueryUrl = "http://www.omdbapi.com/?t=" + x + "&y=&plot=short&apikey=trilogy";
+    
+    request(movieQueryUrl, function (error, response, body) {
+
+
+        console.log("========================");
+        console.log("TITLE: " + JSON.parse(body).Title);
+        console.log("RELEASE DATE: " + JSON.parse(body).Year);
+        console.log("IMDB RATING: " + JSON.parse(body).imdbRating);
+        console.log("ROTTEN TOMATOES RATING: " + JSON.parse(body).Ratings[2].Value);
+        console.log("COUNTRY OF ORIGIN: " + JSON.parse(body).Country);
+        console.log("LANGUAGE: " + JSON.parse(body).Language);
+        console.log("PLOT: " + JSON.parse(body).Plot);
+        console.log("ACTORS: " + JSON.parse(body).Actors);
+        console.log("========================")
+    });
+};
+
+function concertThis(x) {
+
+    var concertQueryUrl = "https://rest.bandsintown.com/artists/" + x + "/events?app_id=codingbootcamp";
+    
+    request(concertQueryUrl, function (error, response, body) {
+
+        var jsonData = JSON.parse(body[0]);
+
+        console.log("========================");
+        console.log("VENUE: " + JSON.parse(jsonData.venue.name));
+    });
+};
