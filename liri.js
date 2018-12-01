@@ -45,7 +45,14 @@ switch (command) {
         if (x) {
             concertThis(x);
             break;
-        }    
+        } else {
+            concertThis("Drake");
+        }
+
+    case "do-what-it-says":
+        doSays();
+        break;
+         
 }
 
 function spotifySong(x) {
@@ -93,9 +100,25 @@ function concertThis(x) {
     
     request(concertQueryUrl, function (error, response, body) {
 
-        var jsonData = JSON.parse(body[0]);
+        var band = JSON.parse(body);
 
-        console.log("========================");
-        console.log("VENUE: " + JSON.parse(jsonData.venue.name));
+        console.log("========================")
+        console.log("VENUE: " + band[0].venue.name);
+        console.log("LOCATION: "  + band[0].venue.city + ", " + band[0].venue.country);
+        console.log("DATE:  " + moment(band[0].datetime).format('LLL'));
+        console.log("========================")
+
+    });
+};
+
+function doSays() {
+
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if ( error ) {
+            log.info('Error occurred: ' + error);
+            return;
+        }  
+        spotifySong(data); 
+        
     });
 };
