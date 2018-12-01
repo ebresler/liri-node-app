@@ -2,7 +2,7 @@
 
 ###  VIDEO DEMO AND SCREENSHOT CAN BE FOUND IN REPOSITY
 
-####**App Outline**
+#### **App Outline**
 
 Description:
 
